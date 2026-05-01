@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <title>AlphaConverter</title>
+    <link rel="stylesheet" href="static/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="dns-prefetch" href="https://design-media.inkpx.com/">
+
+    <link rel="stylesheet" href="static/lib/jssocials-1.4.0/jssocials.css" />
+    <link rel="stylesheet" href="static/lib/jssocials-1.4.0/jssocials-theme-flat.css" />
+
+    <link rel="stylesheet" href="static/css/site1ef8.css?v=FJEmgED4UV-yYkm7TSofwFdIMw3dJoi3_ZHVLcDd_eE" />
+    <link rel="stylesheet" href="static/css/material-design-3.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script async src="../pagead2.googlesyndication.com/pagead/js/f7208.txt?client=ca-pub-6508214169551772"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Material Design 3 Top App Bar -->
+    <div class="md3-top-app-bar">
+        <div class="md3-top-app-bar-content">
+            <h1 class="md3-app-title">AlphaConverter</h1>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="md3-container">
+        <div id="app" class="md3-content-wrapper">
+            <!-- Converter UI -->
+            <div class="md3-card">
+                <h2>Convert Text to Numbers</h2>
+
+                <!-- Input Field -->
+                <div class="md3-text-field">
+                    <label class="md3-text-field-label">Enter text or numbers</label>
+                    <textarea class="md3-text-field-input" id="inputText"
+                        placeholder="Type something here..."></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="md3-button-row">
+                    <button class="md3-button md3-button-filled" id="convertBtn">Convert</button>
+                    <button class="md3-button md3-button-outlined" id="clearBtn">Clear</button>
+                    <button class="md3-button md3-button-outlined" id="copyInputBtn">Copy</button>
+                </div>
+
+                <!-- Output Field -->
+                <div class="md3-text-field" style="margin-top: 24px;">
+                    <label class="md3-text-field-label">Result</label>
+                    <div id="outputText">Conversion result will appear here...</div>
+                </div>
+
+                <!-- Copy Output Button -->
+                <button class="md3-button md3-button-text" id="copyOutputBtn"
+                    style="width: 100%; margin-top: 12px;">Copy Output</button>
+            </div>
+
+            <!-- Options Card -->
+            <div class="md3-card">
+                <h3>Options</h3>
+
+                <div class="md3-text-field">
+                    <label class="md3-text-field-label">Conversion Format</label>
+                    <select id="formatSelect">
+                        <option value="simple">Simple (A=1, B=2, ...)</option>
+                        <option value="binary">Binary</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+
+                <div class="md3-checkbox-group">
+                    <label class="md3-checkbox-label">
+                        <input type="checkbox" id="ignoreSpaces">
+                        <span>Ignore spaces</span>
+                    </label>
+                    <label class="md3-checkbox-label">
+                        <input type="checkbox" id="upperCase">
+                        <span>Uppercase output</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Stats Card -->
+            <div class="md3-card">
+                <h3>Statistics</h3>
+                <div class="md3-stats-grid">
+                    <div class="md3-stat-card">
+                        <div class="md3-stat-label">Characters</div>
+                        <div class="md3-stat-value" id="charCount">0</div>
+                    </div>
+                    <div class="md3-stat-card">
+                        <div class="md3-stat-label">Words</div>
+                        <div class="md3-stat-value" id="wordCount">0</div>
+                    </div>
+                    <div class="md3-stat-card">
+                        <div class="md3-stat-label">Conversions</div>
+                        <div class="md3-stat-value" id="conversionCount">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Tabs -->
+    <div class="md3-bottom-nav">
+        <a href="alphabet-to-numbers.html" class="md3-nav-item md3-nav-active">
+            <span class="md3-nav-icon">🔤</span>
+            <span class="md3-nav-label">Alphabet</span>
+        </a>
+        <a href="binary-converter.html" class="md3-nav-item">
+            <span class="md3-nav-icon">🔢</span>
+            <span class="md3-nav-label">Binary</span>
+        </a>
+        <a href="morse-converter.html" class="md3-nav-item">
+            <span class="md3-nav-icon">📡</span>
+            <span class="md3-nav-label">Morse</span>
+        </a>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="md3-fab" title="Convert">🔄</button>
+
+    <script type="text/javascript">
+        var alphabetModuleName = 'AlphabetToNumber';
+    </script>
+    <script
+        src="static/lib/alphabet/1.0.0/inkpx-alphabet.umd.minf980.js?v=_bp05VSS9Vm5cJAzbjqtKP711zbT-5roc5y51gnIXjI"></script>
+
+    <script src="static/lib/jquery/dist/jquery.min.js"></script>
+    <script src="static/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/lib/pixabay-ac/jquery.auto-complete.min.js"></script>
+
+    <script src="static/lib/jssocials-1.4.0/jssocials.min.js"></script>
+    <script src="static/js/material-design-3.js"></script>
+    <script src="static/js/converter-app.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".share-area").jsSocials({
+                showLabel: false,
+                showCount: false,
+                shares: []
+            });
+        });
+    </script>
+
+    <script src="static/js/sited82b.js?v=tY-L6hNoM8MPZSDCTNHHN6IWhLcDKMUVz5prGmht9Rw"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSNCM615G3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-XSNCM615G3');
+    </script>
+
+</body>
+
+</html>

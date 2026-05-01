@@ -1,0 +1,449 @@
+/* ============================================
+   Apple iOS / macOS Aesthetic Redesign
+   Adaptive Theme (Light / Dark)
+   STUCK SCREEN (NO SCROLL) LAYOUT
+   ============================================ */
+
+:root {
+    /* Apple Default Light Mode Tokens */
+    --apple-bg: #F2F2F7;
+    --apple-surface: #FFFFFF;
+    --apple-surface-grouped: #FFFFFF;
+    --apple-text: #000000;
+    --apple-text-secondary: #8E8E93;
+    --apple-accent: #007AFF;
+    --apple-accent-hover: #0056b3;
+    --apple-border: rgba(60, 60, 67, 0.18); /* Default separator */
+    --apple-input-bg: rgba(118, 118, 128, 0.12); /* Gray native input */
+    --apple-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    --apple-glass-bg: rgba(255, 255, 255, 0.75);
+    
+    --radius-xl: 20px;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 8px;
+}
+
+/* Adaptive Dark Mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --apple-bg: #000000;
+        --apple-surface: #1C1C1E;
+        --apple-surface-grouped: #1C1C1E;
+        --apple-text: #FFFFFF;
+        --apple-text-secondary: #EBEBF599; /* 60% white */
+        --apple-accent: #0A84FF; /* Dark mode blue */
+        --apple-accent-hover: #0066cc;
+        --apple-border: rgba(84, 84, 88, 0.65);
+        --apple-input-bg: rgba(118, 118, 128, 0.24);
+        --apple-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        --apple-glass-bg: rgba(28, 28, 30, 0.75);
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* SCROLLABLE RESPONSIVE LAYOUT */
+html, body {
+    /* Premium Inter font stack */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--apple-bg);
+    color: var(--apple-text);
+    line-height: 1.5;
+    
+    /* Standard Scrolling Settings */
+    min-height: 100vh;
+    overflow-x: hidden;
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* TOP APP BAR - iOS Navigation Bar Style */
+.md3-top-app-bar {
+    background: var(--apple-glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 0.5px solid var(--apple-border);
+    color: var(--apple-text);
+    padding: 12px 20px; /* Reduced padding for more screen space */
+    position: relative;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.md3-top-app-bar-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.md3-app-title {
+    font-size: 18px; /* Slightly larger pro size */
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+/* MAIN CONTAINER - Scrollable */
+.md3-container {
+    width: 100%;
+    padding: 24px 0 120px 0; /* Padding bottom for Tab Bar */
+}
+
+.md3-content-wrapper {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* Restored comfortable gap */
+}
+
+/* CARDS - iOS Grouped List / Card Style */
+.md3-card {
+    background: var(--apple-surface);
+    border-radius: var(--radius-xl);
+    padding: 24px; /* Restored luxurious padding */
+    box-shadow: var(--apple-shadow);
+    display: flex;
+    flex-direction: column;
+}
+
+.md3-card h2,
+.md3-card h3 {
+    margin-bottom: 12px;
+    font-size: 20px; /* Adjusted down slightly */
+    font-weight: 800; /* Pro bold */
+    color: var(--apple-text);
+    letter-spacing: -0.8px;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+/* TEXT FIELDS */
+.md3-text-field {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.md3-text-field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--apple-text-secondary);
+    margin-bottom: 6px;
+    margin-left: 4px; /* Better alignment with input */
+    letter-spacing: -0.2px;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+/* iOS Style Text Input */
+.md3-text-field-input {
+    width: 100%;
+    padding: 12px 16px; /* Tighten padding */
+    background: var(--apple-input-bg);
+    border: 1px solid var(--apple-border); /* Explicit border for better structure */
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--apple-text);
+    transition: all 0.2s ease;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+/* Make Textarea */
+textarea.md3-text-field-input {
+    resize: none;
+    min-height: 140px; /* Restored fixed reasonable height */
+    line-height: 1.5;
+}
+
+.md3-text-field-input::placeholder {
+    color: var(--apple-text-secondary);
+}
+
+.md3-text-field-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.3); /* iOS Focus Ring */
+}
+
+/* OUTPUT TEXT */
+#outputText {
+    min-height: 140px; /* Restored fixed reasonable height */
+    overflow-y: auto; /* Internal scrolling if text is too long */
+    padding: 16px;
+    background: var(--apple-input-bg);
+    border: 1px solid var(--apple-border);
+    border-radius: var(--radius-md);
+    color: var(--apple-text);
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-family: 'Inter', ui-monospace, Menlo, Consolas, monospace; /* Changed to Inter for a cleaner look */
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.2px;
+    text-align: left;
+}
+
+/* BUTTONS - iOS Style */
+.md3-button-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: nowrap;
+    margin: 16px 0 24px 0; /* Restored margins */
+}
+
+.md3-button {
+    min-height: 50px; /* Restored standard height */
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: -0.2px;
+}
+
+.md3-button:active {
+    transform: scale(0.96);
+    opacity: 0.8;
+}
+
+.md3-button-row .md3-button {
+    flex: 1;
+}
+
+.md3-button-filled {
+    background: var(--apple-accent);
+    color: #FFFFFF;
+}
+
+.md3-button-filled:hover {
+    background: var(--apple-accent-hover);
+}
+
+.md3-button-outlined {
+    background: var(--apple-input-bg);
+    color: var(--apple-accent);
+}
+
+.md3-button-text {
+    background-color: transparent;
+    color: var(--apple-accent);
+    font-weight: 600; /* Bolder button text */
+    flex-shrink: 0;
+    margin-top: 8px;
+    min-height: 40px; /* Smaller */
+}
+
+/* SELECT DROPDOWN - iOS Native Style */
+select {
+    width: 100%;
+    padding: 12px 16px; /* Tighten */
+    background-color: var(--apple-input-bg);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--apple-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%238E8E93%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px;
+}
+
+select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.3);
+}
+
+select option {
+    background-color: #0f172a; /* Extremely dark solid slate */
+    color: #ffffff; /* Pure white text */
+    font-weight: 500;
+    padding: 12px 20px; /* Align with select padding */
+}
+
+
+
+/* CHECKBOXES & LABELS */
+.md3-checkbox-group {
+    display: flex;
+    flex-direction: row; /* Horizontal to save vertical space */
+    gap: 8px;
+    margin-top: 8px;
+    background: transparent;
+}
+
+.md3-checkbox-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 10px 12px;
+    transition: background 0.2s ease;
+    background: var(--apple-input-bg);
+    border-radius: var(--radius-md);
+}
+
+.md3-checkbox-label:active {
+    background: rgba(0,0,0,0.05);
+}
+
+.md3-checkbox-label span {
+    color: var(--apple-text);
+    font-size: 14px; /* Smaller to fit */
+    font-weight: 500;
+    text-align: left;
+}
+
+/* iOS Toggle/Checkbox replication */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin: 0 8px 0 0; /* Strict margin for perfect alignment */
+    cursor: pointer;
+    border: 1.5px solid var(--apple-text-secondary);
+    border-radius: 50%; /* iOS checkmarks are often circular or classic rounded */
+    background: transparent;
+    position: relative;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+input[type="checkbox"]:checked {
+    background: var(--apple-accent);
+    border-color: var(--apple-accent);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px; /* Perfectly centered horizontally */
+    top: 3px;  /* Perfectly centered vertically */
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* STATS GRID */
+.md3-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px; /* Restored comfortable gap */
+}
+
+.md3-stat-card {
+    text-align: center;
+    padding: 16px 8px; /* Restored padding */
+    background: var(--apple-input-bg);
+    border-radius: var(--radius-md);
+}
+
+.md3-stat-label {
+    font-size: 12px; /* Restored size */
+    font-weight: 600;
+    color: var(--apple-text-secondary);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.md3-stat-value {
+    font-size: 20px; /* Scaled down */
+    font-weight: 800;
+    color: var(--apple-text);
+    letter-spacing: -0.5px;
+}
+
+/* BOTTOM NAVIGATION - Tab Bar */
+.md3-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 84px;
+    background: var(--apple-glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 0.5px solid var(--apple-border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 99;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.md3-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    color: var(--apple-text-secondary);
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: color 0.2s ease;
+    font-family: inherit;
+    text-decoration: none;
+}
+
+.md3-nav-active {
+    color: var(--apple-accent);
+}
+
+.md3-nav-icon {
+    font-size: 24px;
+}
+
+.md3-nav-label {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+/* Hide FAB */
+.md3-fab {
+    display: none;
+}
+
+/* RESPONSIVE FOR SMALL DEVICES */
+@media (max-width: 480px) {
+    .md3-checkbox-group {
+        flex-direction: column;
+    }
+}

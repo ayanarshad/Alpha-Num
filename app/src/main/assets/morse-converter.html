@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Morse Code Converter</title>
+    
+    <link rel="stylesheet" href="static/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="static/lib/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="static/css/site1ef8.css?v=FJEmgED4UV-yYkm7TSofwFdIMw3dJoi3_ZHVLcDd_eE" />
+    <link rel="stylesheet" href="static/css/material-design-3.css" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Top App Bar -->
+    <header class="md3-top-app-bar">
+        <div class="md3-top-app-bar-content">
+            <h1 class="md3-app-title">Morse Converter</h1>
+        </div>
+    </header>
+
+    <div class="md3-container">
+        <div id="app" class="md3-content-wrapper">
+            <!-- Converter UI -->
+            <div class="md3-card" id="card-converter">
+                <h2 style="display: none;">Converter</h2>
+                
+                <!-- Input Field -->
+                <div class="md3-text-field">
+                    <label class="md3-text-field-label">Input Text</label>
+                    <textarea id="inputText" class="md3-text-field-input" placeholder="Enter text or Morse code here..."></textarea>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="md3-button-row">
+                    <button class="md3-button md3-button-filled" id="convertBtn">Convert</button>
+                    <button class="md3-button md3-button-outlined" id="clearBtn">Clear</button>
+                </div>
+
+                <!-- Output Field -->
+                <div class="md3-text-field" style="margin-top: 0px;">
+                    <label class="md3-text-field-label">Result</label>
+                    <div id="outputText">Conversion result will appear here...</div>
+                </div>
+
+                <!-- Copy Buttons -->
+                <div class="md3-button-row" style="margin-top: 12px; margin-bottom: 0;">
+                    <button class="md3-button md3-button-text" id="copyInputBtn">Copy Input</button>
+                    <button class="md3-button md3-button-text" id="copyOutputBtn">Copy Output</button>
+                </div>
+            </div>
+
+            <!-- Options Card -->
+            <div class="md3-card">
+                <h3 style="margin-bottom: 8px;">Conversion Mode</h3>
+                
+                <div class="md3-checkbox-group" style="flex-direction: column; gap: 4px; margin-bottom: 12px;">
+                    <label class="md3-checkbox-label">
+                        <input type="radio" name="convMode" value="textmorse" checked>
+                        <span>Text to Morse (· -)</span>
+                    </label>
+                    <label class="md3-checkbox-label">
+                        <input type="radio" name="convMode" value="morsetext">
+                        <span>Morse to Text</span>
+                    </label>
+                </div>
+
+                <div class="md3-checkbox-group">
+                    <label class="md3-checkbox-label" style="flex: 1;">
+                        <input type="checkbox" id="ignoreSpaces">
+                        <span>Ignore spaces</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Stats Card -->
+            <div class="md3-card">
+                <h3>Statistics</h3>
+                <div class="md3-stats-grid">
+                    <div class="md3-stat-card">
+                        <div class="md3-stat-label">Characters</div>
+                        <div class="md3-stat-value" id="charCount">0</div>
+                    </div>
+                    <div class="md3-stat-card">
+                        <div class="md3-stat-label">Words</div>
+                        <div class="md3-stat-value" id="wordCount">0</div>
+                    </div>
+                    <div class="md3-stat-card">
+                        <div class="md3-stat-label">Conversions</div>
+                        <div class="md3-stat-value" id="conversionCount">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Tabs -->
+    <div class="md3-bottom-nav">
+        <a href="alphabet-to-numbers.html" class="md3-nav-item">
+            <span class="md3-nav-icon">🔤</span>
+            <span class="md3-nav-label">Alphabet</span>
+        </a>
+        <a href="binary-converter.html" class="md3-nav-item">
+            <span class="md3-nav-icon">🔢</span>
+            <span class="md3-nav-label">Binary</span>
+        </a>
+        <a href="morse-converter.html" class="md3-nav-item md3-nav-active">
+            <span class="md3-nav-icon">📡</span>
+            <span class="md3-nav-label">Morse</span>
+        </a>
+    </div>
+
+    <script src="static/js/morse-converter.js"></script>
+
+</body>
+</html>

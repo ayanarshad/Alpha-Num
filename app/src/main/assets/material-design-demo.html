@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Material Design 3 Components Demo</title>
+    <link rel="stylesheet" href="static/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/android-material.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .demo-section {
+            padding: 24px 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .demo-section h2 {
+            margin-bottom: 16px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+        .demo-item {
+            margin-bottom: 16px;
+            padding: 12px;
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top App Bar -->
+    <div class="android-top-bar">
+        <div class="top-bar-content">
+            <h1 class="app-title">Material Design 3</h1>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="android-container">
+        <!-- Checkboxes Section -->
+        <div class="demo-section">
+            <h2>Checkmarks & Checkboxes</h2>
+            <div class="demo-item">
+                <label class="material-checkbox">
+                    <input type="checkbox" class="material-checkbox__input">
+                    <span class="material-checkbox__label">Enable notifications</span>
+                </label>
+            </div>
+            <div class="demo-item">
+                <label class="material-checkbox">
+                    <input type="checkbox" class="material-checkbox__input" checked>
+                    <span class="material-checkbox__label">Dark mode (checked)</span>
+                </label>
+            </div>
+            <div class="demo-item">
+                <label class="material-checkbox">
+                    <input type="checkbox" class="material-checkbox__input" disabled>
+                    <span class="material-checkbox__label">Disabled checkbox</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Dropdown Menu Section -->
+        <div class="demo-section">
+            <h2>Dropdown Menu with Checkmarks</h2>
+            <div class="demo-item">
+                <div class="material-dropdown">
+                    <button class="material-dropdown__trigger">Select Option</button>
+                    <div class="material-dropdown__menu">
+                        <button class="material-dropdown__item" data-value="option1">
+                            Option 1
+                            <span class="material-checkmark"></span>
+                        </button>
+                        <button class="material-dropdown__item" data-value="option2">Option 2</button>
+                        <button class="material-dropdown__item" data-value="option3">Option 3</button>
+                        <button class="material-dropdown__item" data-value="option4">Option 4</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="demo-item">
+                <label for="select-demo">Material Select:</label>
+                <select id="select-demo" class="material-select">
+                    <option>Choose Language</option>
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Corner Radius Section -->
+        <div class="demo-section">
+            <h2>Corner Radius (Material Design 3)</h2>
+            <div class="demo-item" style="background: linear-gradient(135deg, #6200ee 0%, #3700b3 100%); color: white; border-radius: 12px; padding: 24px; text-align: center;">
+                <p>Medium corner radius (12px) - For buttons, inputs, cards</p>
+            </div>
+            <div class="demo-item" style="background: linear-gradient(135deg, #03dac6 0%, #018786 100%); color: white; border-radius: 28px; padding: 24px; text-align: center;">
+                <p>Large corner radius (28px) - For FABs, large dialogs</p>
+            </div>
+            <div class="demo-item" style="background: #e0e0e0; border-radius: 4px; padding: 16px; text-align: center;">
+                <p>Small corner radius (4px) - For minor components</p>
+            </div>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="demo-section">
+            <h2>Material Buttons</h2>
+            <div class="demo-item">
+                <button class="material-btn material-btn--primary" style="margin-right: 8px;">Primary</button>
+                <button class="material-btn material-btn--secondary">Secondary</button>
+            </div>
+            <div class="demo-item">
+                <button class="material-btn material-btn--outlined" style="margin-right: 8px;">Outlined</button>
+                <button class="material-btn material-btn--text">Text Button</button>
+            </div>
+        </div>
+
+        <!-- Text Fields Section -->
+        <div class="demo-section">
+            <h2>Text Fields</h2>
+            <div class="demo-item">
+                <div class="material-field">
+                    <input type="text" class="material-field__input" placeholder="Enter text">
+                    <label class="material-field__label">Text Input</label>
+                </div>
+            </div>
+            <div class="demo-item">
+                <div class="material-field">
+                    <textarea class="material-field__input" placeholder="Enter your message"></textarea>
+                    <label class="material-field__label">Textarea</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chips Section -->
+        <div class="demo-section">
+            <h2>Material Chips</h2>
+            <div class="demo-item">
+                <span class="material-chip">Chip 1</span>
+                <span class="material-chip">Chip 2</span>
+                <span class="material-chip material-chip--active">Active Chip</span>
+                <span class="material-chip">Chip 4</span>
+            </div>
+        </div>
+
+        <!-- Cards Section -->
+        <div class="demo-section">
+            <h2>Material Cards</h2>
+            <div class="material-card">
+                <h3>Card Title</h3>
+                <p>This is a material design card with proper elevation and corner radius.</p>
+                <p>Try hovering over it to see the elevation effect!</p>
+            </div>
+        </div>
+
+        <!-- Dark Mode Note -->
+        <div class="demo-section">
+            <h2>✨ Dark Mode Support</h2>
+            <div class="demo-item">
+                <p><strong>This app supports dark mode!</strong></p>
+                <p>All components automatically adjust to dark mode based on your system preferences.</p>
+                <p>Try enabling dark mode in your system settings to see the effect.</p>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="demo-section">
+            <h2>ℹ️ Material Design 3 Updates</h2>
+            <ul style="padding-left: 20px; color: var(--text-secondary);">
+                <li>✓ Corner radius: 4px, 12px, 28px (Material Design 3 specs)</li>
+                <li>✓ Checkmarks (✓) in dropdowns and checkboxes</li>
+                <li>✓ Dropdown menus with Material Design styling</li>
+                <li>✓ Dark mode with proper color scheme</li>
+                <li>✓ Smooth animations and transitions</li>
+                <li>✓ Touch-optimized interactions</li>
+                <li>✓ Accessibility support (ARIA, keyboard navigation)</li>
+            </ul>
+        </div>
+
+        <div style="height: 32px;"></div>
+    </div>
+
+    <script src="static/lib/jquery/dist/jquery.min.js"></script>
+    <script src="static/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/android-ui.js"></script>
+</body>
+</html>

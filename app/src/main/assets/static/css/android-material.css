@@ -1,0 +1,945 @@
+/* ============================================
+   Android Material Design 3 CSS
+   ============================================ */
+
+:root {
+    --md-primary: #6200ee;
+    --md-primary-variant: #3700b3;
+    --md-secondary: #03dac6;
+    --md-secondary-variant: #018786;
+    --md-background: #ffffff;
+    --md-surface: #ffffff;
+    --md-error: #cf6679;
+    --md-on-primary: #ffffff;
+    --md-on-secondary: #000000;
+    --md-on-background: #212121;
+    --md-on-surface: #212121;
+    
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --text-hint: #bdbdbd;
+    
+    --elevation-1: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    --elevation-2: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    --elevation-3: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+    --elevation-4: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+    
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    
+    /* Material Design 3 Corner Radius */
+    --corner-small: 12px;
+    --corner-medium: 20px;
+    --corner-large: 32px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #fafafa;
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ============================================
+   ANDROID TOP APP BAR
+   ============================================ */
+
+.android-top-bar {
+    background-color: var(--md-primary);
+    color: var(--md-on-primary);
+    padding: 16px 16px;
+    box-shadow: var(--elevation-1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.top-bar-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+}
+
+.app-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: 0.5px;
+    color: var(--md-on-primary);
+}
+
+/* ============================================
+   MAIN ANDROID CONTAINER
+   ============================================ */
+
+.android-container {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    background-color: #fafafa;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: safe-area-inset-bottom;
+}
+
+.content-wrapper {
+    width: 100%;
+    padding: 0;
+}
+
+/* ============================================
+   LOADING CONTAINER
+   ============================================ */
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    gap: 24px;
+    padding: 24px;
+}
+
+/* Material Design Spinner */
+.material-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(98, 0, 238, 0.15);
+    border-top: 4px solid var(--md-primary);
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: 0.25px;
+}
+
+/* ============================================
+   MATERIAL CARD COMPONENT
+   ============================================ */
+
+.material-card {
+    background: var(--md-surface);
+    border-radius: var(--corner-large);
+    margin: var(--spacing-md);
+    padding: var(--spacing-lg);
+    box-shadow: var(--elevation-1);
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.material-card:active {
+    box-shadow: var(--elevation-3);
+}
+
+.material-card--clickable {
+    cursor: pointer;
+}
+
+.material-card--clickable:active {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* ============================================
+   MATERIAL BUTTON
+   ============================================ */
+
+.material-btn {
+    min-height: 36px;
+    padding: 0 16px;
+    border: none;
+    border-radius: var(--corner-medium);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1.25px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.material-btn:active {
+    box-shadow: var(--elevation-2);
+}
+
+.material-btn--primary {
+    background-color: var(--md-primary);
+    color: var(--md-on-primary);
+    box-shadow: var(--elevation-2);
+}
+
+.material-btn--primary:active {
+    background-color: var(--md-primary-variant);
+    box-shadow: var(--elevation-3);
+}
+
+.material-btn--secondary {
+    background-color: var(--md-secondary);
+    color: var(--md-on-secondary);
+    box-shadow: var(--elevation-2);
+}
+
+.material-btn--secondary:active {
+    background-color: var(--md-secondary-variant);
+    box-shadow: var(--elevation-3);
+}
+
+.material-btn--outlined {
+    background-color: transparent;
+    color: var(--md-primary);
+    border: 1px solid var(--md-primary);
+}
+
+.material-btn--outlined:active {
+    background-color: rgba(98, 0, 238, 0.08);
+}
+
+.material-btn--text {
+    background-color: transparent;
+    color: var(--md-primary);
+    box-shadow: none;
+}
+
+.material-btn--text:active {
+    background-color: rgba(98, 0, 238, 0.12);
+}
+
+.material-btn:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   MATERIAL TEXT FIELD
+   ============================================ */
+
+.material-field {
+    margin-bottom: var(--spacing-lg);
+}
+
+.material-field__input {
+    width: 100%;
+    padding: 8px 16px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: var(--corner-medium) var(--corner-medium) 0 0;
+    background-color: rgba(0, 0, 0, 0.04);
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-primary);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.material-field__input::placeholder {
+    color: var(--text-hint);
+}
+
+.material-field__input:focus {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.08);
+    border-bottom-color: var(--md-primary);
+    border-bottom-width: 2px;
+    padding-bottom: 7px;
+}
+
+.material-field__label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+}
+
+.material-field__input:focus ~ .material-field__label,
+.material-field__input:not(:placeholder-shown) ~ .material-field__label {
+    color: var(--md-primary);
+}
+
+/* ============================================
+   MATERIAL CHIP
+   ============================================ */
+
+.material-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 20px;
+    background-color: #e0e0e0;
+    color: var(--text-primary);
+    font-size: 13px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.material-chip:active {
+    background-color: #bdbdbd;
+}
+
+.material-chip--active {
+    background-color: var(--md-primary);
+    color: var(--md-on-primary);
+}
+
+/* ============================================
+   MATERIAL DIVIDER
+   ============================================ */
+
+.material-divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.12);
+    margin: var(--spacing-lg) 0;
+}
+
+/* ============================================
+   MATERIAL DROPDOWN MENU
+   ============================================ */
+
+.material-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.material-dropdown__trigger {
+    min-height: 40px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 12px;
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.material-dropdown__trigger:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.material-dropdown__trigger:active {
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+.material-dropdown__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 100%;
+    background-color: var(--md-surface);
+    border-radius: 12px;
+    box-shadow: var(--elevation-3);
+    margin-top: 8px;
+    display: none;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.material-dropdown__menu.visible {
+    display: block;
+    animation: material-dropdown-appear 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes material-dropdown-appear {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.material-dropdown__item {
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.material-dropdown__item:last-child {
+    border-bottom: none;
+}
+
+.material-dropdown__item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.material-dropdown__item:active {
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+.material-dropdown__item.selected {
+    color: var(--md-primary);
+    font-weight: 500;
+}
+
+/* ============================================
+   CHECKMARK ICON
+   ============================================ */
+
+.material-checkbox {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.material-checkbox__input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(0, 0, 0, 0.38);
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    margin-right: 8px;
+}
+
+.material-checkbox__input:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.material-checkbox__input:checked {
+    background-color: var(--md-primary);
+    border-color: var(--md-primary);
+}
+
+.material-checkbox__input:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--md-on-primary);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.material-checkbox__input:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+.material-checkbox__label {
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+/* Checkmark Icon for Dropdown Items */
+.material-checkmark {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--md-primary);
+    font-size: 18px;
+    margin-left: auto;
+}
+
+.material-checkmark::after {
+    content: '✓';
+    font-weight: bold;
+}
+
+/* ============================================
+   MATERIAL MENU (for selects)
+   ============================================ */
+
+select.material-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23212121' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    padding-right: 40px;
+}
+
+select.material-select:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+select.material-select:focus {
+    outline: none;
+    background-color: rgba(0, 0, 0, 0.08);
+    border-bottom-color: var(--md-primary);
+    border-bottom-width: 2px;
+}
+
+select.material-select option {
+    padding: 8px 16px;
+    background-color: var(--md-surface);
+    color: var(--text-primary);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1 {
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0px;
+    color: var(--text-primary);
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0px;
+    color: var(--text-primary);
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.15px;
+    color: var(--text-primary);
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.15px;
+    color: var(--text-primary);
+}
+
+h5 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.57;
+    letter-spacing: 0px;
+    color: var(--text-primary);
+}
+
+h6 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.66;
+    letter-spacing: 0.4px;
+    color: var(--text-secondary);
+}
+
+p {
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.25px;
+    color: var(--text-primary);
+}
+
+.subtitle1 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.15px;
+    color: var(--text-primary);
+}
+
+.subtitle2 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.57;
+    letter-spacing: 0.1px;
+    color: var(--text-primary);
+}
+
+.body1 {
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+}
+
+.body2 {
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: 0.25px;
+    color: var(--text-primary);
+}
+
+.caption {
+    font-size: 12px;
+    line-height: 1.66;
+    letter-spacing: 0.4px;
+    color: var(--text-secondary);
+}
+
+.overline {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   BOOTSTRAP OVERRIDES
+   ============================================ */
+
+.btn {
+    min-height: 36px;
+    padding: 8px 24px;
+    border: none;
+    border-radius: var(--corner-medium);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.46px;
+}
+
+.btn-primary {
+    background-color: var(--md-primary) !important;
+    color: var(--md-on-primary) !important;
+    box-shadow: var(--elevation-2);
+    border: none !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--md-primary) !important;
+    box-shadow: var(--elevation-3);
+}
+
+.btn-primary:active {
+    background-color: var(--md-primary-variant) !important;
+    box-shadow: var(--elevation-4);
+}
+
+.form-control {
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 0;
+    padding: 8px 0;
+    background-color: rgba(0, 0, 0, 0.04);
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.form-control:focus {
+    background-color: rgba(0, 0, 0, 0.08);
+    border-bottom-color: var(--md-primary);
+    border-bottom-width: 2px;
+    box-shadow: none;
+    color: var(--text-primary);
+}
+
+.form-control::placeholder {
+    color: var(--text-hint);
+}
+
+.progress {
+    height: 4px;
+    background-color: rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: var(--md-primary);
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-primary {
+    color: var(--text-primary);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-hint {
+    color: var(--text-hint);
+}
+
+.p-xs { padding: var(--spacing-xs); }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+.p-xl { padding: var(--spacing-xl); }
+
+.px-xs { padding-left: var(--spacing-xs); padding-right: var(--spacing-xs); }
+.px-sm { padding-left: var(--spacing-sm); padding-right: var(--spacing-sm); }
+.px-md { padding-left: var(--spacing-md); padding-right: var(--spacing-md); }
+.px-lg { padding-left: var(--spacing-lg); padding-right: var(--spacing-lg); }
+
+.py-xs { padding-top: var(--spacing-xs); padding-bottom: var(--spacing-xs); }
+.py-sm { padding-top: var(--spacing-sm); padding-bottom: var(--spacing-sm); }
+.py-md { padding-top: var(--spacing-md); padding-bottom: var(--spacing-md); }
+.py-lg { padding-top: var(--spacing-lg); padding-bottom: var(--spacing-lg); }
+
+.m-xs { margin: var(--spacing-xs); }
+.m-sm { margin: var(--spacing-sm); }
+.m-md { margin: var(--spacing-md); }
+.m-lg { margin: var(--spacing-lg); }
+
+.mx-xs { margin-left: var(--spacing-xs); margin-right: var(--spacing-xs); }
+.mx-sm { margin-left: var(--spacing-sm); margin-right: var(--spacing-sm); }
+.mx-md { margin-left: var(--spacing-md); margin-right: var(--spacing-md); }
+.mx-lg { margin-left: var(--spacing-lg); margin-right: var(--spacing-lg); }
+
+.my-xs { margin-top: var(--spacing-xs); margin-bottom: var(--spacing-xs); }
+.my-sm { margin-top: var(--spacing-sm); margin-bottom: var(--spacing-sm); }
+.my-md { margin-top: var(--spacing-md); margin-bottom: var(--spacing-md); }
+.my-lg { margin-top: var(--spacing-lg); margin-bottom: var(--spacing-lg); }
+
+.gap-xs { gap: var(--spacing-xs); }
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+
+.text-center {
+    text-align: center;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 600px) {
+    .android-top-bar {
+        padding: 12px 16px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .material-card {
+        margin: 8px;
+        padding: 16px;
+    }
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --md-primary: #bb86fc;
+        --md-primary-variant: #3700b3;
+        --md-secondary: #03dac6;
+        --md-background: #121212;
+        --md-surface: #1e1e1e;
+        
+        --text-primary: #ffffff;
+        --text-secondary: #b3b3b3;
+        --text-hint: #808080;
+    }
+
+    body {
+        background-color: #121212;
+    }
+
+    .android-top-bar {
+        background-color: #1f1f1f;
+    }
+
+    .android-container {
+        background-color: #121212;
+    }
+
+    .material-card {
+        background: var(--md-surface);
+        color: var(--text-primary);
+    }
+
+    .material-field__input {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-bottom-color: rgba(255, 255, 255, 0.12);
+        color: var(--text-primary);
+    }
+
+    .material-field__input:focus {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .material-divider {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .material-chip {
+        background-color: #333333;
+        color: var(--text-primary);
+    }
+
+    .material-dropdown__menu {
+        background-color: #1e1e1e;
+    }
+
+    .material-dropdown__trigger {
+        border-color: rgba(255, 255, 255, 0.12);
+        color: var(--text-primary);
+    }
+
+    .material-dropdown__trigger:hover {
+        background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    .material-dropdown__trigger:active {
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .material-dropdown__item {
+        color: var(--text-primary);
+        border-bottom-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .material-dropdown__item:hover {
+        background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    .material-dropdown__item:active {
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .material-checkbox__input {
+        border-color: rgba(255, 255, 255, 0.38);
+    }
+
+    .material-checkbox__input:hover {
+        background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    .material-checkbox__label {
+        color: var(--text-primary);
+    }
+
+    select.material-select {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-bottom-color: rgba(255, 255, 255, 0.12);
+        color: var(--text-primary);
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    select.material-select:hover {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    select.material-select:focus {
+        background-color: rgba(255, 255, 255, 0.12);
+        border-bottom-color: var(--md-primary);
+    }
+
+    select.material-select option {
+        background-color: #1e1e1e;
+        color: var(--text-primary);
+    }
+
+    .form-control {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-bottom-color: rgba(255, 255, 255, 0.12);
+        color: var(--text-primary);
+    }
+
+    .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .progress {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+}
