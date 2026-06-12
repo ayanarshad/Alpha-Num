@@ -46,3 +46,5 @@ A sleek, lightweight Android utility application designed to handle real-time en
    git clone https://github.com/ayanarshad/Alpha-Num.git
 ### Installation in Android
 * [download](https://github.com/ayanarshad/Alpha-Num/releases) the APK
+## Web Version
+* [alpha-num](https://ayanarshad.github.io/AlphaNum/)
