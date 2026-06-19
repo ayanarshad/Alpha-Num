@@ -5,12 +5,16 @@
 class BinaryConverterApp {
     constructor() {
         this.conversions = 0;
+        if (window.MaterialDesign3 && window.MaterialDesign3.getStats) {
+            this.conversions = window.MaterialDesign3.getStats().conversions || 0;
+        }
         this.init();
     }
 
     init() {
         this.setupEventListeners();
         this.updateStats();
+        window.appRestoreHook = (item) => this.restore(item);
     }
 
     setupEventListeners() {
@@ -51,20 +55,65 @@ class BinaryConverterApp {
 
             if (format === 'textbin') {
                 for (let i = 0; i < input.length; i++) {
-                    output += input.charCodeAt(i).toString(2).padStart(8, '0') + ' ';
+                    const char = input[i];
+                    if (char === '\n') {
+                        output = output.trim() + '\n';
+                    } else if (char === '\r') {
+                        // skip carriage return
+                    } else {
+                        output += char.charCodeAt(0).toString(2).padStart(8, '0') + ' ';
+                    }
                 }
                 output = output.trim();
             } else if (format === 'bintext') {
-                const binStr = input.replace(/[^01\s]/g, '');
-                const bytes = binStr.split(/\s+/).filter(b => b.length > 0);
-                for (let byte of bytes) {
-                    output += String.fromCharCode(parseInt(byte, 2));
+                const lines = input.split(/\n/);
+                const decodedLines = [];
+                for (let line of lines) {
+                    const bytes = line.trim().split(/ +/).filter(b => b.length > 0);
+                    let decodedLine = '';
+                    for (let byte of bytes) {
+                        const cleanByte = byte.replace(/[^01]/g, '');
+                        if (cleanByte.length > 0) {
+                            decodedLine += String.fromCharCode(parseInt(cleanByte, 2));
+                        }
+                    }
+                    decodedLines.push(decodedLine);
                 }
+                output = decodedLines.join('\n');
             }
             
             document.getElementById('outputText').textContent = output;
-            this.conversions++;
+            
+            const chars = input.length;
+            const words = input.trim().split(/\s+/).filter(w => w.length > 0).length;
+            const paragraphs = input.split(/\n+/).filter(p => p.trim().length > 0).length;
+
+            // Increment and save stats in cookie
+            if (window.MaterialDesign3 && window.MaterialDesign3.incrementConversions) {
+                const updatedStats = window.MaterialDesign3.incrementConversions(chars, words, paragraphs);
+                this.conversions = updatedStats.conversions;
+            } else {
+                this.conversions++;
+            }
+
             this.updateStats();
+
+            // Save to history cookie
+            if (window.MaterialDesign3 && window.MaterialDesign3.saveHistoryItem) {
+                window.MaterialDesign3.saveHistoryItem(
+                    'Binary',
+                    input,
+                    output,
+                    chars,
+                    words,
+                    paragraphs,
+                    format,
+                    {
+                        ignoreSpaces: document.getElementById('ignoreSpaces')?.checked
+                    }
+                );
+            }
+
             this.showSnackbar('✓ Conversion complete');
         } catch (error) {
             this.showSnackbar('Error: ' + error.message);
@@ -96,14 +145,42 @@ class BinaryConverterApp {
         }
     }
 
+    restore(item) {
+        const inputEl = document.getElementById('inputText');
+        if (inputEl) inputEl.value = item.input;
+        
+        const ignoreSpaces = document.getElementById('ignoreSpaces');
+        if (ignoreSpaces) ignoreSpaces.checked = !!item.opts.ignoreSpaces;
+
+        const modeRadios = document.getElementsByName('convMode');
+        if (modeRadios && item.format) {
+            modeRadios.forEach(radio => {
+                radio.checked = (radio.value === item.format);
+            });
+        }
+        
+        this.convert();
+    }
+
     updateStats() {
         const input = document.getElementById('inputText')?.value || '';
         const charCount = input.length;
         const wordCount = input.trim().split(/\s+/).filter(w => w.length > 0).length;
+        const paragraphCount = input.split(/\n+/).filter(p => p.trim().length > 0).length;
 
         document.getElementById('charCount').textContent = charCount;
         document.getElementById('wordCount').textContent = wordCount;
+        document.getElementById('paragraphCount').textContent = paragraphCount;
         document.getElementById('conversionCount').textContent = this.conversions;
+
+        // Render lifetime stats from cookie
+        if (window.MaterialDesign3 && window.MaterialDesign3.getStats) {
+            const stats = window.MaterialDesign3.getStats();
+            document.getElementById('charCountLifetime').textContent = stats.characters || 0;
+            document.getElementById('wordCountLifetime').textContent = stats.words || 0;
+            document.getElementById('paragraphCountLifetime').textContent = stats.paragraphs || 0;
+            document.getElementById('conversionCountLifetime').textContent = stats.conversions || 0;
+        }
     }
 
     showSnackbar(message) {

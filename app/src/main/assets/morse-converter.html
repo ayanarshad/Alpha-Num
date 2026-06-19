@@ -21,6 +21,7 @@
     <header class="md3-top-app-bar">
         <div class="md3-top-app-bar-content">
             <h1 class="md3-app-title">Morse Converter</h1>
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Theme">🌙</button>
         </div>
     </header>
 
@@ -85,16 +86,31 @@
                     <div class="md3-stat-card">
                         <div class="md3-stat-label">Characters</div>
                         <div class="md3-stat-value" id="charCount">0</div>
+                        <div class="md3-stat-lifetime">Total: <span id="charCountLifetime">0</span></div>
                     </div>
                     <div class="md3-stat-card">
                         <div class="md3-stat-label">Words</div>
                         <div class="md3-stat-value" id="wordCount">0</div>
+                        <div class="md3-stat-lifetime">Total: <span id="wordCountLifetime">0</span></div>
+                    </div>
+                    <div class="md3-stat-card">
+                        <div class="md3-stat-label">Paragraphs</div>
+                        <div class="md3-stat-value" id="paragraphCount">0</div>
+                        <div class="md3-stat-lifetime">Total: <span id="paragraphCountLifetime">0</span></div>
                     </div>
                     <div class="md3-stat-card">
                         <div class="md3-stat-label">Conversions</div>
                         <div class="md3-stat-value" id="conversionCount">0</div>
+                        <div class="md3-stat-lifetime">Total: <span id="conversionCountLifetime">0</span></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- History Card -->
+            <div class="md3-card" id="historyCard" style="display: none;">
+                <h3>Recent History</h3>
+                <div id="historyList"></div>
+                <button class="md3-button md3-button-text" id="clearHistoryBtn" style="width: 100%; margin-top: 12px;">Clear History</button>
             </div>
         </div>
     </div>
@@ -115,6 +131,7 @@
         </a>
     </div>
 
+    <script src="static/js/material-design-3.js"></script>
     <script src="static/js/morse-converter.js"></script>
 
 </body>

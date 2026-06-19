@@ -6,166 +6,848 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="AlphaConverter — Convert text to numbers, binary, and Morse code instantly. Free, offline-capable tool with history and statistics." />
 
-    <title>AlphaConverter</title>
-    <link rel="stylesheet" href="static/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="dns-prefetch" href="https://design-media.inkpx.com/">
-
-    <link rel="stylesheet" href="static/lib/jssocials-1.4.0/jssocials.css" />
-    <link rel="stylesheet" href="static/lib/jssocials-1.4.0/jssocials-theme-flat.css" />
-
-    <link rel="stylesheet" href="static/css/site1ef8.css?v=FJEmgED4UV-yYkm7TSofwFdIMw3dJoi3_ZHVLcDd_eE" />
-    <link rel="stylesheet" href="static/css/material-design-3.css" />
+    <title>AlphaConverter — Text to Numbers</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 
-    <script async src="../pagead2.googlesyndication.com/pagead/js/f7208.txt?client=ca-pub-6508214169551772"
-        crossorigin="anonymous"></script>
+    <style>
+        /* ── RESET & BASE ── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        /* ── TOKENS ── */
+        :root {
+            --bg:          #f0f4ff;
+            --bg-card:     rgba(255,255,255,0.75);
+            --bg-input:    rgba(241,245,249,0.8);
+            --accent:      #4f46e5;
+            --accent-2:    #7c3aed;
+            --accent-glow: rgba(79,70,229,0.18);
+            --text:        #0f172a;
+            --text-sub:    #64748b;
+            --border:      rgba(148,163,184,0.18);
+            --shadow:      0 8px 32px -8px rgba(79,70,229,0.13);
+            --shadow-lg:   0 20px 60px -10px rgba(79,70,229,0.18);
+            --radius-xl:   22px;
+            --radius-lg:   14px;
+            --radius-md:   10px;
+            --radius-sm:   7px;
+            --nav-h:       76px;
+            --bar-h:       60px;
+            --transition:  all 0.25s cubic-bezier(0.25,0.8,0.25,1);
+        }
+        .dark-theme {
+            --bg:          #07091a;
+            --bg-card:     rgba(20,24,50,0.72);
+            --bg-input:    rgba(10,12,30,0.7);
+            --accent:      #6366f1;
+            --accent-2:    #a855f7;
+            --accent-glow: rgba(99,102,241,0.2);
+            --text:        #e2e8f0;
+            --text-sub:    #94a3b8;
+            --border:      rgba(255,255,255,0.08);
+            --shadow:      0 8px 32px -4px rgba(0,0,0,0.4);
+            --shadow-lg:   0 24px 60px -10px rgba(0,0,0,0.6);
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        /* ── BODY ── */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: var(--nav-h);
+            transition: background 0.4s ease, color 0.3s ease;
+        }
+
+        /* ── TOP BAR ── */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            height: var(--bar-h);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            background: rgba(240,244,255,0.72);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s ease;
+        }
+        .dark-theme .top-bar {
+            background: rgba(7,9,26,0.72);
+        }
+        .top-bar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .brand-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            box-shadow: 0 4px 12px var(--accent-glow);
+            flex-shrink: 0;
+        }
+        .brand-name {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: var(--text);
+            transition: var(--transition);
+        }
+        .icon-btn:hover { transform: scale(1.08); background: var(--accent-glow); border-color: var(--accent); }
+        .icon-btn:active { transform: scale(0.95); }
+
+        /* ── HERO ── */
+        .hero {
+            padding: 32px 20px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-glow);
+            border: 1px solid rgba(99,102,241,0.25);
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 14px;
+            letter-spacing: 0.3px;
+        }
+        .hero-title {
+            font-size: clamp(26px, 6vw, 38px);
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text) 40%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-sub {
+            font-size: 14px;
+            color: var(--text-sub);
+            font-weight: 500;
+            max-width: 340px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ── CONTENT ── */
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 22px 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+        }
+        .dark-theme .card:hover { border-color: rgba(99,102,241,0.25); }
+        .card-title {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            box-shadow: 0 2px 8px var(--accent-glow);
+            flex-shrink: 0;
+        }
+
+        /* ── FIELD LABEL ── */
+        .field-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* ── TEXTAREA ── */
+        .field-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 14px 16px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--text);
+            resize: vertical;
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+        .field-textarea::placeholder { color: var(--text-sub); opacity: 0.7; }
+        .field-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            background: var(--bg-card);
+        }
+
+        /* ── OUTPUT BOX ── */
+        .output-box {
+            width: 100%;
+            min-height: 120px;
+            max-height: 240px;
+            overflow-y: auto;
+            padding: 14px 16px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-family: 'Inter', ui-monospace, Menlo, monospace;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text);
+            word-break: break-word;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+        .output-box.has-result {
+            border-color: rgba(99,102,241,0.3);
+            background: var(--bg-card);
+        }
+
+        /* ── BTN ROW ── */
+        .btn-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+            margin: 14px 0;
+        }
+        .btn-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        @media (max-width: 380px) {
+            .btn-row { grid-template-columns: 1fr 1fr; }
+            .btn-row .btn-primary { grid-column: 1 / -1; }
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            height: 46px;
+            padding: 0 18px;
+            border-radius: var(--radius-md);
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            letter-spacing: -0.1px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .btn:active { transform: scale(0.96); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+            color: #fff;
+            box-shadow: 0 4px 14px var(--accent-glow);
+        }
+        .btn-primary:hover { box-shadow: 0 6px 20px var(--accent-glow); transform: translateY(-1px); }
+
+        .btn-ghost {
+            background: var(--bg-input);
+            color: var(--text-sub);
+            border: 1.5px solid var(--border);
+        }
+        .btn-ghost:hover { color: var(--text); border-color: var(--accent); background: var(--accent-glow); }
+
+        .btn-text {
+            background: transparent;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 13px;
+            height: 38px;
+            width: 100%;
+        }
+        .btn-text:hover { background: var(--accent-glow); border-radius: var(--radius-sm); }
+
+        /* ── SELECT ── */
+        .field-select {
+            width: 100%;
+            height: 46px;
+            padding: 0 40px 0 14px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--text);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%2216%22 height%3D%2216%22 viewBox%3D%220 0 24 24%22 fill%3D%22none%22 stroke%3D%22%238E8E93%22 stroke-width%3D%222%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%3E%3Cpolyline points%3D%226 9 12 15 18 9%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            transition: var(--transition);
+        }
+        .field-select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+        /* ── TOGGLE OPTIONS ── */
+        .toggle-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+        }
+        .toggle-label:hover { border-color: var(--accent); background: var(--accent-glow); }
+        .toggle-label span { font-size: 13px; font-weight: 600; color: var(--text); }
+        .toggle-label input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+            border: 1.5px solid var(--text-sub);
+            border-radius: 50%;
+            background: transparent;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .toggle-label input[type="checkbox"]:checked {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .toggle-label input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 5px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        /* ── STATS GRID ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 460px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+        .stat-card {
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 14px 10px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .stat-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+        .stat-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+        .stat-lifetime {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-top: 5px;
+            opacity: 0.85;
+        }
+        .stat-lifetime span { color: var(--accent); }
+
+        /* ── HISTORY CARD ── */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 340px;
+            overflow-y: auto;
+            padding-right: 2px;
+            margin-top: 4px;
+        }
+        .history-item {
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            transition: var(--transition);
+        }
+        .history-item:hover { border-color: var(--accent); }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .history-badge {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .history-time { font-size: 11px; color: var(--text-sub); }
+        .history-preview {
+            font-size: 12.5px;
+            color: var(--text);
+            line-height: 1.5;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .history-preview strong { opacity: 0.7; font-weight: 600; }
+        .history-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 10.5px;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+        }
+        .history-meta b { color: var(--accent); font-weight: 700; }
+        .history-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+        }
+        .h-btn {
+            background: none;
+            border: none;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+        .h-btn.restore { color: var(--accent); }
+        .h-btn.restore:hover { background: var(--accent-glow); }
+        .h-btn.del { color: #ef4444; }
+        .h-btn.del:hover { background: rgba(239,68,68,0.1); }
+        .history-empty {
+            text-align: center;
+            color: var(--text-sub);
+            padding: 28px 0;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* ── LEGACY LINK ── */
+        .legacy-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 4px 0 20px;
+        }
+        .legacy-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-sub);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 9px 18px;
+            border-radius: var(--radius-md);
+            background: var(--bg-input);
+            border: 1.5px solid var(--border);
+            transition: var(--transition);
+        }
+        .legacy-link:hover { color: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+
+        /* ── BOTTOM NAV ── */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-h);
+            background: rgba(240,244,255,0.78);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 150;
+            padding-bottom: env(safe-area-inset-bottom);
+            transition: background 0.3s ease;
+        }
+        .dark-theme .bottom-nav { background: rgba(7,9,26,0.78); }
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            text-decoration: none;
+            color: var(--text-sub);
+            padding: 8px 0;
+            transition: var(--transition);
+        }
+        .nav-item:hover { color: var(--accent); }
+        .nav-item.active { color: var(--accent); }
+        .nav-item.active .nav-icon { transform: scale(1.1); }
+        .nav-icon { font-size: 22px; line-height: 1; transition: transform 0.2s ease; }
+        .nav-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.2px; }
+
+        /* ── SNACKBAR ── */
+        .snackbar {
+            position: fixed;
+            bottom: calc(var(--nav-h) + 12px);
+            left: 16px;
+            right: 16px;
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 13px 18px;
+            background: var(--bg-card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            animation: snackIn 0.3s cubic-bezier(0.25,0.8,0.25,1);
+        }
+        @keyframes snackIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.95); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes snackOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to   { opacity: 0; transform: translateY(16px) scale(0.95); }
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 14px 0;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Material Design 3 Top App Bar -->
-    <div class="md3-top-app-bar">
-        <div class="md3-top-app-bar-content">
-            <h1 class="md3-app-title">AlphaConverter</h1>
+    <!-- TOP BAR -->
+    <header class="top-bar">
+        <a href="alphabet-to-numbers.html" class="top-bar-brand">
+            <div class="brand-badge">🔤</div>
+            <span class="brand-name">AlphaConverter</span>
+        </a>
+        <div class="top-bar-actions">
+            <button id="themeToggleBtn" class="icon-btn" title="Toggle theme">🌙</button>
         </div>
-    </div>
+    </header>
 
-    <!-- Main Content -->
-    <div class="md3-container">
-        <div id="app" class="md3-content-wrapper">
-            <!-- Converter UI -->
-            <div class="md3-card">
-                <h2>Convert Text to Numbers</h2>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">✦ Alphabet Encoder</div>
+        from
+        <a class="hero-badge" href="https://aaportfolio.pages.dev" target="_blank">(AA)</a>
+        <h1 class="hero-title">Convert Text<br>to Numbers</h1>
+        <p class="hero-sub">Encode any letter, word or paragraph into numbers, binary, or Morse code instantly.</p>
+    </section>
 
-                <!-- Input Field -->
-                <div class="md3-text-field">
-                    <label class="md3-text-field-label">Enter text or numbers</label>
-                    <textarea class="md3-text-field-input" id="inputText"
-                        placeholder="Type something here..."></textarea>
-                </div>
+    <!-- MAIN CONTENT -->
+    <main class="content">
 
-                <!-- Buttons -->
-                <div class="md3-button-row">
-                    <button class="md3-button md3-button-filled" id="convertBtn">Convert</button>
-                    <button class="md3-button md3-button-outlined" id="clearBtn">Clear</button>
-                    <button class="md3-button md3-button-outlined" id="copyInputBtn">Copy</button>
-                </div>
-
-                <!-- Output Field -->
-                <div class="md3-text-field" style="margin-top: 24px;">
-                    <label class="md3-text-field-label">Result</label>
-                    <div id="outputText">Conversion result will appear here...</div>
-                </div>
-
-                <!-- Copy Output Button -->
-                <button class="md3-button md3-button-text" id="copyOutputBtn"
-                    style="width: 100%; margin-top: 12px;">Copy Output</button>
+        <!-- Converter Card -->
+        <div class="card">
+            <div class="card-title">
+                <div class="card-title-icon">✏️</div>
+                Input
             </div>
 
-            <!-- Options Card -->
-            <div class="md3-card">
-                <h3>Options</h3>
+            <label class="field-label" for="inputText">Enter text or numbers</label>
+            <textarea
+                class="field-textarea"
+                id="inputText"
+                placeholder="Type anything here — letters, words, paragraphs…"
+                rows="5"
+            ></textarea>
 
-                <div class="md3-text-field">
-                    <label class="md3-text-field-label">Conversion Format</label>
-                    <select id="formatSelect">
-                        <option value="simple">Simple (A=1, B=2, ...)</option>
-                        <option value="binary">Binary</option>
-                        <option value="advanced">Advanced</option>
-                    </select>
-                </div>
-
-                <div class="md3-checkbox-group">
-                    <label class="md3-checkbox-label">
-                        <input type="checkbox" id="ignoreSpaces">
-                        <span>Ignore spaces</span>
-                    </label>
-                    <label class="md3-checkbox-label">
-                        <input type="checkbox" id="upperCase">
-                        <span>Uppercase output</span>
-                    </label>
-                </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="convertBtn">⚡ Convert</button>
+                <button class="btn btn-ghost" id="clearBtn">🗑 Clear</button>
+                <button class="btn btn-ghost" id="copyInputBtn">📋 Copy</button>
             </div>
 
-            <!-- Stats Card -->
-            <div class="md3-card">
-                <h3>Statistics</h3>
-                <div class="md3-stats-grid">
-                    <div class="md3-stat-card">
-                        <div class="md3-stat-label">Characters</div>
-                        <div class="md3-stat-value" id="charCount">0</div>
-                    </div>
-                    <div class="md3-stat-card">
-                        <div class="md3-stat-label">Words</div>
-                        <div class="md3-stat-value" id="wordCount">0</div>
-                    </div>
-                    <div class="md3-stat-card">
-                        <div class="md3-stat-label">Conversions</div>
-                        <div class="md3-stat-value" id="conversionCount">0</div>
-                    </div>
-                </div>
+            <div class="divider"></div>
+
+            <label class="field-label">Result</label>
+            <div class="output-box" id="outputText">Conversion result will appear here…</div>
+
+            <div class="btn-row-2" style="margin-top: 12px;">
+                <button class="btn btn-ghost" id="copyOutputBtn">📋 Copy Output</button>
+                <button class="btn btn-ghost" id="shareBtn">🔗 Share</button>
             </div>
         </div>
-    </div>
-    <div class="oldlink" style="text-align: center; margin-top: -100px" position="fixed" bottom="0" width="100%">
-        <a href="oldver/alphabet-to-numbers.html" target="_blank">View Old Version</a>
-    </div>
 
-    <!-- Bottom Navigation Tabs -->
-    <div class="md3-bottom-nav">
-        <a href="alphabet-to-numbers.html" class="md3-nav-item md3-nav-active">
-            <span class="md3-nav-icon">🔤</span>
-            <span class="md3-nav-label">Alphabet</span>
+        <!-- Options Card -->
+        <div class="card">
+            <div class="card-title">
+                <div class="card-title-icon">⚙️</div>
+                Options
+            </div>
+
+            <label class="field-label" for="formatSelect">Conversion Format</label>
+            <select class="field-select" id="formatSelect">
+                <option value="simple">Simple — A=1, B=2, C=3…</option>
+                <option value="binary">Binary (8-bit ASCII)</option>
+                <option value="advanced">Advanced</option>
+            </select>
+
+            <div class="toggle-row">
+                <label class="toggle-label">
+                    <input type="checkbox" id="ignoreSpaces">
+                    <span>Ignore spaces</span>
+                </label>
+                <label class="toggle-label">
+                    <input type="checkbox" id="upperCase">
+                    <span>Uppercase output</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Statistics Card -->
+        <div class="card">
+            <div class="card-title">
+                <div class="card-title-icon">📊</div>
+                Statistics
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Characters</div>
+                    <div class="stat-value" id="charCount">0</div>
+                    <div class="stat-lifetime">All: <span id="charCountLifetime">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Words</div>
+                    <div class="stat-value" id="wordCount">0</div>
+                    <div class="stat-lifetime">All: <span id="wordCountLifetime">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Paragraphs</div>
+                    <div class="stat-value" id="paragraphCount">0</div>
+                    <div class="stat-lifetime">All: <span id="paragraphCountLifetime">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Conversions</div>
+                    <div class="stat-value" id="conversionCount">0</div>
+                    <div class="stat-lifetime">All: <span id="conversionCountLifetime">0</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Card -->
+        <div class="card" id="historyCard" style="display:none;">
+            <div class="card-title">
+                <div class="card-title-icon">🕓</div>
+                Recent History
+            </div>
+            <div id="historyList"></div>
+            <button class="btn-text" id="clearHistoryBtn" style="margin-top:10px;">🗑 Clear History</button>
+        </div>
+
+        <!-- Legacy Link -->
+        <div class="legacy-wrap">
+            <a href="oldver/modes.html" class="legacy-link">
+                Go to Legacy Version js. for more feathers ➔
+            </a>
+        </div>
+
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <a href="alphabet-to-numbers.html" class="nav-item active">
+            <span class="nav-icon">🔤</span>
+            <span class="nav-label">Alphabet</span>
         </a>
-        <a href="binary-converter.html" class="md3-nav-item">
-            <span class="md3-nav-icon">🔢</span>
-            <span class="md3-nav-label">Binary</span>
+        <a href="binary-converter.html" class="nav-item">
+            <span class="nav-icon">🔢</span>
+            <span class="nav-label">Binary</span>
         </a>
-        <a href="morse-converter.html" class="md3-nav-item">
-            <span class="md3-nav-icon">📡</span>
-            <span class="md3-nav-label">Morse</span>
+        <a href="morse-converter.html" class="nav-item">
+            <span class="nav-icon">📡</span>
+            <span class="nav-label">Morse</span>
         </a>
-    </div>
+    </nav>
 
-    <!-- Floating Action Button -->
-    <button class="md3-fab" title="Convert">🔄</button>
-
-    <script type="text/javascript">
-        var alphabetModuleName = 'AlphabetToNumber';
-    </script>
-    <script
-        src="static/lib/alphabet/1.0.0/inkpx-alphabet.umd.minf980.js?v=_bp05VSS9Vm5cJAzbjqtKP711zbT-5roc5y51gnIXjI"></script>
-
+    <!-- SCRIPTS -->
     <script src="static/lib/jquery/dist/jquery.min.js"></script>
-    <script src="static/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="static/lib/pixabay-ac/jquery.auto-complete.min.js"></script>
-
-    <script src="static/lib/jssocials-1.4.0/jssocials.min.js"></script>
     <script src="static/js/material-design-3.js"></script>
     <script src="static/js/converter-app.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $(".share-area").jsSocials({
-                showLabel: false,
-                showCount: false,
-                shares: []
-            });
-        });
-    </script>
-
-    <script src="static/js/sited82b.js?v=tY-L6hNoM8MPZSDCTNHHN6IWhLcDKMUVz5prGmht9Rw"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSNCM615G3"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-XSNCM615G3');
-    </script>
+        /* ── Inline theme + share + snackbar wiring ── */
+        (function () {
+            // Theme init — material-design-3.js setupThemeToggle handles it,
+            // but also update the icon-btn directly.
+            function syncIcon() {
+                const btn = document.getElementById('themeToggleBtn');
+                if (!btn) return;
+                const dark = document.documentElement.classList.contains('dark-theme');
+                btn.textContent = dark ? '☀️' : '🌙';
+            }
+            const observer = new MutationObserver(syncIcon);
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+            document.addEventListener('DOMContentLoaded', syncIcon);
 
+            // Share button — copy URL + result
+            document.addEventListener('DOMContentLoaded', function () {
+                document.getElementById('shareBtn')?.addEventListener('click', function () {
+                    const out = document.getElementById('outputText')?.textContent || '';
+                    const text = out.includes('result will appear') ? window.location.href : out;
+                    navigator.clipboard?.writeText(text).then(() => {
+                        showSnack('✓ Copied to clipboard!');
+                    });
+                });
+            });
+
+            function showSnack(msg) {
+                document.querySelectorAll('.snackbar').forEach(el => el.remove());
+                const s = document.createElement('div');
+                s.className = 'snackbar';
+                s.textContent = msg;
+                document.body.appendChild(s);
+                setTimeout(() => {
+                    s.style.animation = 'snackOut 0.3s cubic-bezier(0.25,0.8,0.25,1) forwards';
+                    setTimeout(() => s.remove(), 300);
+                }, 2600);
+            }
+        })();
+    </script>
 </body>
 
 </html>

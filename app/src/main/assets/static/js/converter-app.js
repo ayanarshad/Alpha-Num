@@ -5,12 +5,16 @@
 class AlphaConverterApp {
     constructor() {
         this.conversions = 0;
+        if (window.MaterialDesign3 && window.MaterialDesign3.getStats) {
+            this.conversions = window.MaterialDesign3.getStats().conversions || 0;
+        }
         this.init();
     }
 
     init() {
         this.setupEventListeners();
         this.updateStats();
+        window.appRestoreHook = (item) => this.restore(item);
     }
 
     setupEventListeners() {
@@ -47,9 +51,41 @@ class AlphaConverterApp {
                 output = output.toUpperCase();
             }
             
-            document.getElementById('outputText').textContent = output;
-            this.conversions++;
+            const outputEl = document.getElementById('outputText');
+            outputEl.textContent = output;
+            outputEl.classList.add('has-result');
+            
+            const chars = input.length;
+            const words = input.trim().split(/\s+/).filter(w => w.length > 0).length;
+            const paragraphs = input.split(/\n+/).filter(p => p.trim().length > 0).length;
+
+            // Increment and save stats in cookie
+            if (window.MaterialDesign3 && window.MaterialDesign3.incrementConversions) {
+                const updatedStats = window.MaterialDesign3.incrementConversions(chars, words, paragraphs);
+                this.conversions = updatedStats.conversions;
+            } else {
+                this.conversions++;
+            }
+
             this.updateStats();
+
+            // Save to history cookie
+            if (window.MaterialDesign3 && window.MaterialDesign3.saveHistoryItem) {
+                window.MaterialDesign3.saveHistoryItem(
+                    'Alphabet',
+                    input,
+                    output,
+                    chars,
+                    words,
+                    paragraphs,
+                    format,
+                    {
+                        ignoreSpaces: document.getElementById('ignoreSpaces')?.checked,
+                        upperCase: document.getElementById('upperCase')?.checked
+                    }
+                );
+            }
+
             this.showSnackbar('✓ Conversion complete');
         } catch (error) {
             this.showSnackbar('Error: ' + error.message);
@@ -91,9 +127,11 @@ class AlphaConverterApp {
 
     clear() {
         document.getElementById('inputText').value = '';
-        document.getElementById('outputText').textContent = 'Conversion result will appear here...';
+        const outputEl = document.getElementById('outputText');
+        outputEl.textContent = 'Conversion result will appear here…';
+        outputEl.classList.remove('has-result');
         this.updateStats();
-        this.showSnackbar('Cleared');
+        this.showSnackbar('🗑 Cleared');
     }
 
     copyInput() {
@@ -114,40 +152,54 @@ class AlphaConverterApp {
         }
     }
 
+    restore(item) {
+        const inputEl = document.getElementById('inputText');
+        if (inputEl) inputEl.value = item.input;
+        
+        const formatSelect = document.getElementById('formatSelect');
+        if (formatSelect && item.format) formatSelect.value = item.format;
+        
+        const ignoreSpaces = document.getElementById('ignoreSpaces');
+        if (ignoreSpaces) ignoreSpaces.checked = !!item.opts.ignoreSpaces;
+        
+        const upperCase = document.getElementById('upperCase');
+        if (upperCase) upperCase.checked = !!item.opts.upperCase;
+        
+        this.convert();
+    }
+
     updateStats() {
         const input = document.getElementById('inputText')?.value || '';
         const charCount = input.length;
         const wordCount = input.trim().split(/\s+/).filter(w => w.length > 0).length;
+        const paragraphCount = input.split(/\n+/).filter(p => p.trim().length > 0).length;
 
         document.getElementById('charCount').textContent = charCount;
         document.getElementById('wordCount').textContent = wordCount;
+        document.getElementById('paragraphCount').textContent = paragraphCount;
         document.getElementById('conversionCount').textContent = this.conversions;
+
+        // Render lifetime stats from cookie
+        if (window.MaterialDesign3 && window.MaterialDesign3.getStats) {
+            const stats = window.MaterialDesign3.getStats();
+            document.getElementById('charCountLifetime').textContent = stats.characters || 0;
+            document.getElementById('wordCountLifetime').textContent = stats.words || 0;
+            document.getElementById('paragraphCountLifetime').textContent = stats.paragraphs || 0;
+            document.getElementById('conversionCountLifetime').textContent = stats.conversions || 0;
+        }
     }
 
     showSnackbar(message) {
-        const snackbar = document.createElement('div');
-        snackbar.style.cssText = `
-            position: fixed;
-            bottom: 96px;
-            left: 16px;
-            right: 16px;
-            max-width: 568px;
-            margin: 0 auto;
-            padding: 16px;
-            background-color: #323232;
-            color: white;
-            border-radius: 8px;
-            font-size: 14px;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            animation: slideUp 0.3s ease;
-        `;
-        snackbar.textContent = message;
-        document.body.appendChild(snackbar);
-
+        // Use page's own .snackbar style if available, else fallback
+        document.querySelectorAll('.snackbar').forEach(el => el.remove());
+        const s = document.createElement('div');
+        s.className = 'snackbar';
+        s.textContent = message;
+        document.body.appendChild(s);
         setTimeout(() => {
-            snackbar.remove();
-        }, 2500);
+            s.style.animation = 'snackOut 0.3s cubic-bezier(0.25,0.8,0.25,1) forwards';
+            setTimeout(() => s.remove(), 300);
+        }, 2600);
     }
 }
 

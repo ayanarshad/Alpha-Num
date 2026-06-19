@@ -5,6 +5,9 @@
 class MorseConverterApp {
     constructor() {
         this.conversions = 0;
+        if (window.MaterialDesign3 && window.MaterialDesign3.getStats) {
+            this.conversions = window.MaterialDesign3.getStats().conversions || 0;
+        }
         this.morseCodeMap = {
             'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
             'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
@@ -30,6 +33,7 @@ class MorseConverterApp {
     init() {
         this.setupEventListeners();
         this.updateStats();
+        window.appRestoreHook = (item) => this.restore(item);
     }
 
     setupEventListeners() {
@@ -69,35 +73,74 @@ class MorseConverterApp {
             let output = '';
 
             if (format === 'textmorse') {
-                const upperInput = input.toUpperCase();
-                let morseArr = [];
-                for (let char of upperInput) {
-                    if (this.morseCodeMap[char]) {
-                        morseArr.push(this.morseCodeMap[char]);
-                    } else {
-                        // Keep unknown characters
-                        morseArr.push(char);
+                const lines = input.split(/\n/);
+                const convertedLines = [];
+                for (let line of lines) {
+                    const upperInput = line.toUpperCase();
+                    let morseArr = [];
+                    for (let char of upperInput) {
+                        if (this.morseCodeMap[char]) {
+                            morseArr.push(this.morseCodeMap[char]);
+                        } else if (char !== '\r') {
+                            // Keep unknown characters
+                            morseArr.push(char);
+                        }
                     }
+                    convertedLines.push(morseArr.join(' '));
                 }
-                output = morseArr.join(' ');
+                output = convertedLines.join('\n');
             } else if (format === 'morsetext') {
-                // Split by spaces. Morse words are typically separated by '/' or multiple spaces.
-                // Our encoder uses '/' for space.
-                const tokens = input.trim().split(/\s+/);
-                for (let token of tokens) {
-                    if (token === '/') {
-                        output += ' ';
-                    } else if (this.reverseMorseMap[token]) {
-                        output += this.reverseMorseMap[token];
-                    } else {
-                        output += token; // keep unknown
+                const lines = input.split(/\n/);
+                const decodedLines = [];
+                for (let line of lines) {
+                    const tokens = line.trim().split(/\s+/);
+                    let decodedLine = '';
+                    for (let token of tokens) {
+                        if (token === '/') {
+                            decodedLine += ' ';
+                        } else if (this.reverseMorseMap[token]) {
+                            decodedLine += this.reverseMorseMap[token];
+                        } else if (token.length > 0) {
+                            decodedLine += token; // keep unknown
+                        }
                     }
+                    decodedLines.push(decodedLine);
                 }
+                output = decodedLines.join('\n');
             }
             
             document.getElementById('outputText').textContent = output;
-            this.conversions++;
+            
+            const chars = input.length;
+            const words = input.trim().split(/\s+/).filter(w => w.length > 0).length;
+            const paragraphs = input.split(/\n+/).filter(p => p.trim().length > 0).length;
+
+            // Increment and save stats in cookie
+            if (window.MaterialDesign3 && window.MaterialDesign3.incrementConversions) {
+                const updatedStats = window.MaterialDesign3.incrementConversions(chars, words, paragraphs);
+                this.conversions = updatedStats.conversions;
+            } else {
+                this.conversions++;
+            }
+
             this.updateStats();
+
+            // Save to history cookie
+            if (window.MaterialDesign3 && window.MaterialDesign3.saveHistoryItem) {
+                window.MaterialDesign3.saveHistoryItem(
+                    'Morse',
+                    input,
+                    output,
+                    chars,
+                    words,
+                    paragraphs,
+                    format,
+                    {
+                        ignoreSpaces: document.getElementById('ignoreSpaces')?.checked
+                    }
+                );
+            }
+
             this.showSnackbar('✓ Conversion complete');
         } catch (error) {
             this.showSnackbar('Error: ' + error.message);
@@ -129,14 +172,42 @@ class MorseConverterApp {
         }
     }
 
+    restore(item) {
+        const inputEl = document.getElementById('inputText');
+        if (inputEl) inputEl.value = item.input;
+        
+        const ignoreSpaces = document.getElementById('ignoreSpaces');
+        if (ignoreSpaces) ignoreSpaces.checked = !!item.opts.ignoreSpaces;
+
+        const modeRadios = document.getElementsByName('convMode');
+        if (modeRadios && item.format) {
+            modeRadios.forEach(radio => {
+                radio.checked = (radio.value === item.format);
+            });
+        }
+        
+        this.convert();
+    }
+
     updateStats() {
         const input = document.getElementById('inputText')?.value || '';
         const charCount = input.length;
         const wordCount = input.trim().split(/\s+/).filter(w => w.length > 0).length;
+        const paragraphCount = input.split(/\n+/).filter(p => p.trim().length > 0).length;
 
         document.getElementById('charCount').textContent = charCount;
         document.getElementById('wordCount').textContent = wordCount;
+        document.getElementById('paragraphCount').textContent = paragraphCount;
         document.getElementById('conversionCount').textContent = this.conversions;
+
+        // Render lifetime stats from cookie
+        if (window.MaterialDesign3 && window.MaterialDesign3.getStats) {
+            const stats = window.MaterialDesign3.getStats();
+            document.getElementById('charCountLifetime').textContent = stats.characters || 0;
+            document.getElementById('wordCountLifetime').textContent = stats.words || 0;
+            document.getElementById('paragraphCountLifetime').textContent = stats.paragraphs || 0;
+            document.getElementById('conversionCountLifetime').textContent = stats.conversions || 0;
+        }
     }
 
     showSnackbar(message) {
